@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "main": "electron/main.cjs",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && electron .",
-    "dist": "npm run build && electron-builder --win"
+    "dev:web": "vite",
+    "dev:app": "vite build && electron .",
+    "build:win": "vite build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --win"
   },
   "build": {
     "appId": "neko-virumaandi",
