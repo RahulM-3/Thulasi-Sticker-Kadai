@@ -42,3 +42,12 @@ ipcMain.handle('firebase-signup', async (event, { username, password }) => {
     return { success: false, error: err.message };
   }
 });
+
+ipcMain.handle('firebase-signin', async (event, { username, password }) => {
+  try {
+    const data = await firebase.signinUser(username, password);
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});

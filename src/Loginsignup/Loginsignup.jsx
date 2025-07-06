@@ -18,16 +18,19 @@ function Loginsignup() {
     if (isSignIn) {
       try {
         const result = await window.firebaseAPI.signinUser(username, password);
+        console.log(result)
         setMessage(result.data.message);
-      } catch (err) {
-        setMessage('Signup failed: ' + err.message);
+      } 
+      catch (err) {
+        setMessage('Signin failed: ' + err.message);
       }
     } 
     else {
       try {
         const result = await window.firebaseAPI.signupUser(username, password);
         setMessage(result.data.message);
-      } catch (err) {
+      }
+      catch (err) {
         setMessage('Signup failed: ' + err.message);
       }
     }
@@ -40,7 +43,7 @@ function Loginsignup() {
         
         <div id="username-wrapper">
           <label htmlFor="username">Username</label>  
-          { message === "Username already taken" && <label style={{ color: 'red', position: 'absolute', marginTop: "15px"}}>
+          { message === "Username already taken" || message === "User does not exist" && <label style={{ color: 'red', position: 'absolute', marginTop: "15px"}}>
             { message }
           </label>}
         </div>
@@ -56,7 +59,7 @@ function Loginsignup() {
         <div id="password-wrapper">
           <label htmlFor="password">Password</label>
           {isSignIn && <a href="#" id="forgot-link">Forgot password?</a>}
-          { message === "Password should be 6 character long" && <label style={{ color: 'red', position: 'absolute', marginTop: "30px"}}>
+          { message === "Password should be 6 character long" || message === "Incorrect password" && <label style={{ color: 'red', position: 'absolute', marginTop: "30px"}}>
             { message }
           </label>}
         </div>

@@ -34,14 +34,38 @@ async function signupUser(username, password) {
     });
 
     return { success: true, message: 'Signup successful' };
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('Signup error:', error);
     return { success: false, message: 'Signup failed: ' + error.message };
   }
 }
 
 async function signinUser(username, password) {
-  
+  const usersRef = db.ref('users');
+
+  try {
+    const snapshot = await usersRef.child(username).once('value');
+
+    if (!snapshot.exists()) {
+      return { success: false, message: 'User does not exist' };
+    }
+
+    const userData = snapshot.val();
+    const hashedPassword = userData.password;
+
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!isMatch) {
+      return { success: false, message: 'Incorrect password' };
+    }
+
+    return { success: true, message: 'Sign in successful' };
+  } 
+  catch (error) {
+    console.error('Signin error:', error);
+    return { success: false, message: 'Signin failed: ' + error.message };
+  }
 }
 
-module.exports = { signupUser }
+module.exports = { signupUser, signinUser }
