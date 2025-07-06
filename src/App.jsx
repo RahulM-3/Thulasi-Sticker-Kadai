@@ -9,10 +9,15 @@ function App() {
     return <Loginsignup setSignedInUser={ setSignedInUser } />;
   }
 
+  const logout = async () => {
+    await window.electronAPI.saveUserCreds("", "");
+    setSignedInUser(null);
+  }
+
   return (
-    <div>
-      <p>Logged in as:</p>
-      <h1>{signedInUser}</h1>
+    <div style={{position: "absolute", top: "0", left: "0"}}>
+      <p>Logged in as: { signedInUser }</p>
+      <button onClick={ logout }>Logout</button>
     </div>
   );
 }
