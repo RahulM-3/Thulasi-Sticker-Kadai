@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
-import './Loginsignup.css'
+import './Loginsignup.css';
 
 function Loginsignup() {
-  
   const [isSignIn, setIsSignIn] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageColor, setMessageColor] = useState('red');
 
   const handleToggle = () => {
     setIsSignIn(!isSignIn);
+    setMessage('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  };
 
-  (async () => {
-  try {
-    const result = await window.firebaseAPI.signupUser("virumaandi", "test");
-    console.log(result);
-  } catch (err) {
-    console.error(err);
-  }
-})();
+    if (isSignIn) {
+      setMessage('Sign-in not implemented yet.');
+      setMessageColor('orange');
+    } else {
+      try {
+        const result = await window.firebaseAPI.signupUser(username, password);
+        setMessage(result.data.message);
+        setMessageColor(result.data.success ? 'green' : 'red');
+      } catch (err) {
+        setMessage('Signup failed: ' + err.message);
+        setMessageColor('red');
+      }
+    }
+  };
 
   return (
     <div id="auth-container">
@@ -60,9 +67,15 @@ function Loginsignup() {
             {isSignIn ? 'Sign Up' : 'Sign In'}
           </button>
         </p>
+
+        {message && (
+          <label style={{ color: messageColor, marginTop: '10px', display: 'block' }}>
+            {message}
+          </label>
+        )}
       </form>
     </div>
   );
 }
 
-export default Loginsignup
+export default Loginsignup;

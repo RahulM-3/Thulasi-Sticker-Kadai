@@ -1,5 +1,6 @@
 var admin = require("firebase-admin");
-const hashedPassword = require('crypto')
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 10;
 
 var serviceAccount = require("./serviceAccountKey.json");
 const { Model } = require("firebase-admin/machine-learning");
@@ -11,27 +12,27 @@ admin.initializeApp({
 
 const db = admin.database();
 
-function signupUser(username, password) {
+async function signupUser(username, password) {
   const usersRef = db.ref('users');
 
-  // Check if username already exists
-  usersRef.child(username).once('value', (snapshot) => {
+  try {
+    const snapshot = await usersRef.child(username).once('value');
+
     if (snapshot.exists()) {
-      console.log('Username already taken');
+      return { success: false, message: 'Username already taken' };
     }
-    else {
-      usersRef.child(username).set({
-        password: password,
-        createdAt: Date.now()
-      }, (error) => {
-        if (error) {
-          console.error('Signup failed:', error);
-        } else {
-          console.log('User signed up successfully');
-        }
-      });
-    }
-  });
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    await usersRef.child(username).set({
+      password: hashedPassword,
+      createdAt: Date.now()
+    });
+
+    return { success: true, message: 'Signup successful' };
+  } catch (error) {
+    console.error('Signup error:', error);
+    return { success: false, message: 'Signup failed: ' + error.message };
+  }
 }
 
 module.exports = { signupUser }
