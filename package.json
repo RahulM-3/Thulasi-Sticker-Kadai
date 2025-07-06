@@ -1,13 +1,14 @@
 {
   "name": "thulasi-sticker-kadai",
+  "author": "Rahul M",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "electron/main.cjs",
   "scripts": {
     "dev:web": "vite",
     "dev:app": "vite build && electron .",
     "build:win": "vite build && electron-builder --win",
-    "build:linux": "npm run build && electron-builder --win"
+    "build:linux": "npm run build && electron-builder --linux"
   },
   "build": {
     "appId": "neko-virumaandi",
@@ -19,8 +20,14 @@
       "dist/**/*",
       "electron/**/*"
     ],
+    "linux": {
+      "icon": "public/icon.png",
+      "target": "deb"
+    },
     "win": {
-      "target": "nsis"
+      "icon": "public/icon.ico",
+      "target": "nsis",
+      "signAndEditExecutable": true
     }
   },
   "dependencies": {

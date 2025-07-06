@@ -1,17 +1,24 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const firebase = require('./firebase');
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    show: false,
+    icon: path.join(__dirname, 'public', process.platform === 'win32' ? 'icon.ico' : 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false
     }
   });
+  
+  win.maximize();
+  win.show();
+
+  if (app.isPackaged) {
+    Menu.setApplicationMenu(null);
+  }
 
   if (process.env.NODE_ENV === 'development') {
     win.loadURL('http://localhost:5173');
