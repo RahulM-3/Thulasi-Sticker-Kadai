@@ -69,7 +69,7 @@
   font-size: 0.9rem;
 }
 
-#switch-to-signin {
+#switch-to-signup {
   background: none;
   border: none;
   color: #007bff;
@@ -78,6 +78,6 @@
   text-decoration: underline;
 }
 
-#switch-to-signin:hover {
+#switch-to-signup {
   text-decoration: none;
 }
