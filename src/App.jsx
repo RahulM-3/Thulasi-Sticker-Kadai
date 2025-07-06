@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import Loginsignup  from './Loginsignup/Loginsignup';
+import { useEffect } from 'react';
+import './App.css';
+import Loginsignup from './Loginsignup/Loginsignup';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div>
-      <Loginsignup/>
+      <Loginsignup />
     </div>
   );
 }
 
-export default App
+export default App;

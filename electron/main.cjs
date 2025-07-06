@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const firebase = require('./firebase');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -30,4 +31,14 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+
+// IPC handler
+ipcMain.handle('firebase-signup', async (event, { username, password }) => {
+  try {
+    const data = await firebase.signupUser(username, password);
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 });

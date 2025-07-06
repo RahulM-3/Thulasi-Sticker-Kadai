@@ -15,6 +15,15 @@ function Loginsignup() {
     e.preventDefault();
   };
 
+  (async () => {
+  try {
+    const result = await window.firebaseAPI.signupUser("virumaandi", "test");
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+  }
+})();
+
   return (
     <div id="auth-container">
       <form id="signin-form" onSubmit={handleSubmit}>
