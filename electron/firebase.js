@@ -22,6 +22,11 @@ async function signupUser(username, password) {
       return { success: false, message: 'Username already taken' };
     }
 
+    if(password.length < 6)
+    {
+      return { success: false, message: 'Password should be 6 character long' };
+    }
+
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     await usersRef.child(username).set({
       password: hashedPassword,
@@ -33,6 +38,10 @@ async function signupUser(username, password) {
     console.error('Signup error:', error);
     return { success: false, message: 'Signup failed: ' + error.message };
   }
+}
+
+async function signinUser(username, password) {
+  
 }
 
 module.exports = { signupUser }

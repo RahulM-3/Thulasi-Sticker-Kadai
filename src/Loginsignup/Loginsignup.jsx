@@ -6,7 +6,6 @@ function Loginsignup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [messageColor, setMessageColor] = useState('red');
 
   const handleToggle = () => {
     setIsSignIn(!isSignIn);
@@ -17,16 +16,19 @@ function Loginsignup() {
     e.preventDefault();
 
     if (isSignIn) {
-      setMessage('Sign-in not implemented yet.');
-      setMessageColor('orange');
-    } else {
+      try {
+        const result = await window.firebaseAPI.signinUser(username, password);
+        setMessage(result.data.message);
+      } catch (err) {
+        setMessage('Signup failed: ' + err.message);
+      }
+    } 
+    else {
       try {
         const result = await window.firebaseAPI.signupUser(username, password);
         setMessage(result.data.message);
-        setMessageColor(result.data.success ? 'green' : 'red');
       } catch (err) {
         setMessage('Signup failed: ' + err.message);
-        setMessageColor('red');
       }
     }
   };
@@ -35,8 +37,13 @@ function Loginsignup() {
     <div id="auth-container">
       <form id="signin-form" onSubmit={handleSubmit}>
         <h2>{isSignIn ? 'Sign In' : 'Sign Up'}</h2>
-
-        <label htmlFor="username">Username</label>
+        
+        <div id="username-wrapper">
+          <label htmlFor="username">Username</label>  
+          { message === "Username already taken" && <label style={{ color: 'red', position: 'absolute', marginTop: "15px"}}>
+            { message }
+          </label>}
+        </div>
         <input
           type="text"
           id="username"
@@ -49,6 +56,9 @@ function Loginsignup() {
         <div id="password-wrapper">
           <label htmlFor="password">Password</label>
           {isSignIn && <a href="#" id="forgot-link">Forgot password?</a>}
+          { message === "Password should be 6 character long" && <label style={{ color: 'red', position: 'absolute', marginTop: "30px"}}>
+            { message }
+          </label>}
         </div>
         <input
           type="password"
@@ -67,12 +77,6 @@ function Loginsignup() {
             {isSignIn ? 'Sign Up' : 'Sign In'}
           </button>
         </p>
-
-        {message && (
-          <label style={{ color: messageColor, marginTop: '10px', display: 'block' }}>
-            {message}
-          </label>
-        )}
       </form>
     </div>
   );

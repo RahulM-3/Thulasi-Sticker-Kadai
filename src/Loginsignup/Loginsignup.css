@@ -20,6 +20,11 @@
   text-align: center;
 }
 
+#signin-form #username-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 #signin-form input {
   padding: 0.5rem;
   font-size: 1rem;
