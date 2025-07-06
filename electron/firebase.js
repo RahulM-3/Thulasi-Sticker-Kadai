@@ -1,5 +1,5 @@
 var admin = require("firebase-admin");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const SALT_ROUNDS = 10;
 
 var serviceAccount = require("./serviceAccountKey.json");
