@@ -45,7 +45,8 @@ ipcMain.handle('firebase-signup', async (event, { username, password }) => {
   try {
     const data = await firebase.signupUser(username, password);
     return { success: true, data };
-  } catch (err) {
+  } 
+  catch (err) {
     return { success: false, error: err.message };
   }
 });
@@ -54,7 +55,52 @@ ipcMain.handle('firebase-signin', async (event, { username, password }) => {
   try {
     const data = await firebase.signinUser(username, password);
     return { success: true, data };
-  } catch (err) {
+  } 
+  catch (err) {
     return { success: false, error: err.message };
   }
+});
+
+
+// save and retrive username
+const { encrypt, decrypt } = require("./utils")
+const fs = require('fs');
+
+const userDataPath = app.getPath('userData');
+const userFile = path.join(userDataPath, 'user.json');
+
+ipcMain.handle('save-username', (event, { username, password }) => {
+  try {
+    const encryptedData = {
+      username: encrypt(username),
+      password: encrypt(password)
+    };
+
+    fs.writeFileSync(userFile, JSON.stringify(encryptedData), 'utf-8');
+    return { success: true };
+  } 
+  catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('get-username', () => {
+  try {
+    if (fs.existsSync(userFile)) {
+      const raw = fs.readFileSync(userFile, 'utf-8');
+      const encryptedData = JSON.parse(raw);
+
+      const decrypted = {
+        username: decrypt(encryptedData.username),
+        password: decrypt(encryptedData.password)
+      };
+
+      return decrypted;
+    }
+  } 
+  catch (err) {
+    console.error('Failed to read/decrypt user data:', err);
+  }
+
+  return null;
 });
