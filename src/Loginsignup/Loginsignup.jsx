@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Loginsignup.css';
 
 function Loginsignup({ setSignedInUser }) {
@@ -43,15 +43,17 @@ function Loginsignup({ setSignedInUser }) {
     }
   };
 
-  (async () => {
-    const usercreds = await window.electronAPI.getUserCreds();
-    if(usercreds) {
-      const result = await window.firebaseAPI.signinUser(usercreds.username, usercreds.password);
-      if(result.data.success) {
-        setSignedInUser(usercreds.username);
+  useEffect(() => {
+    (async () => {
+      const usercreds = await window.electronAPI.getUserCreds();
+      if (usercreds) {
+        const result = await window.firebaseAPI.signinUser(usercreds.username, usercreds.password);
+        if (result.data.success) {
+          setSignedInUser(usercreds.username);
+        }
       }
-    }
-  })();
+    })();
+  }, []);
 
   return(
   <div id="auth-container">
