@@ -15,9 +15,15 @@ function App() {
   }
 
   return (
-    <div style={{position: "absolute", top: "0", left: "0"}}>
-      <p>Logged in as: { signedInUser }</p>
-      <button onClick={ logout }>Logout</button>
+    <div id="main">
+      <div id="sidebar">
+        <div id="sidebarheader">
+          <p>
+            {signedInUser}
+            <a onClick={logout}>Logout</a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
