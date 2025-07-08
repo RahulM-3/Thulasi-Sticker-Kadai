@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Loginsignup.css';
 
-function Loginsignup({ setSignedInUser }) {
+function Loginsignup({ setSignedInUser, setLoadingScreen }) {
   const [isSignIn, setIsSignIn] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -52,6 +52,7 @@ function Loginsignup({ setSignedInUser }) {
           setSignedInUser(usercreds.username);
         }
       }
+      setLoadingScreen(false);
     })();
   }, []);
 
