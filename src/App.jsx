@@ -15,7 +15,7 @@ function App() {
       <div>
         {loadingScreen && (
           <div className="loading-overlay">
-            <img src="./loading-darkmode.gif" alt="loading" />
+            <img src="./loading_darkmode.gif" alt="loading" />
           </div>
           )
         }

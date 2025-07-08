@@ -57,6 +57,8 @@
 }
 
 #signin-form button[type="submit"] {
+  width: 300px;
+  height: 38px;
   background-color: #4caf50;
   color: white;
   padding: 0.6rem;

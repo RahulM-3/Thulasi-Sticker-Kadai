@@ -6,6 +6,7 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleToggle = () => {
     setIsSignIn(!isSignIn);
@@ -14,6 +15,8 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
 
     if (isSignIn) {
       try {
@@ -27,6 +30,9 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
       catch (err) {
         setMessage('Signin failed: ' + err.message);
       }
+      finally {
+        setIsSubmitting(false);
+      }
     } 
     else {
       try {
@@ -39,6 +45,9 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
       }
       catch (err) {
         setMessage('Signup failed: ' + err.message);
+      }
+      finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -89,7 +98,13 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">{ isSignIn ? 'Sign In' : 'Sign Up' }</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <img src="./button_loading_screen.gif" alt="loading" style={{ position: "relative", width: "80px", 
+                                                                          height: "80px", bottom: "31px" }} />) : 
+            (isSignIn ? 'Sign In' : 'Sign Up')
+          }
+        </button>
         <p id="switch-auth">
           { isSignIn ? 'New to Sticker Kadai?' : 'Already have an account?' }
           <button type="button" id="switch-to-signup" onClick={ handleToggle }>
