@@ -106,10 +106,10 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
           }
         </button>
         <p id="switch-auth">
-          { isSignIn ? 'New to Sticker Kadai?' : 'Already have an account?' }
-          <button type="button" id="switch-to-signup" onClick={ handleToggle }>
-            { isSignIn ? 'Sign Up' : 'Sign In' }
-          </button>
+            {isSignIn ? 'New to Sticker Kadai? ' : 'Already have an account? '}
+            <a href="#" id="switch-to-signup" onClick={(e) => { e.preventDefault(); handleToggle(); }}>
+              {isSignIn ? 'Sign Up' : 'Sign In'}
+            </a>
         </p>
       </form>
     </div>

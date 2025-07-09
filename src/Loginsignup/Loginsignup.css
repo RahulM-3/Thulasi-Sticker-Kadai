@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: rgb(15,71,159);
 }
 
 #signin-form {
@@ -11,13 +12,16 @@
   gap: 1rem;
   width: 300px;
   padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(59, 7, 100, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 #signin-form h2 {
   margin-bottom: 0.5rem;
   text-align: center;
+  color: #3b0764;
 }
 
 #signin-form #username-wrapper {
@@ -28,12 +32,15 @@
 #signin-form input {
   padding: 0.5rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 2px solid #ed2788;
   border-radius: 6px;
+  background-color: #fdf2f8;
+  color: #3b0764;
 }
 
 #signin-form label {
-    text-align: left;
+  text-align: left;
+  color: #3b0764;
 }
 
 #password-wrapper {
@@ -48,7 +55,7 @@
 
 #forgot-link {
   font-size: 0.85rem;
-  color: #007bff;
+  color: #740645;
   text-decoration: none;
 }
 
@@ -59,32 +66,34 @@
 #signin-form button[type="submit"] {
   width: 300px;
   height: 38px;
-  background-color: #4caf50;
+  background-color: #ed2788;
   color: white;
   padding: 0.6rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
 }
 
 #signin-form button[type="submit"]:hover {
-  background-color: #45a049;
+  background-color: #c50766;
 }
 
 #switch-auth {
   text-align: center;
   font-size: 0.9rem;
+  color: #3b0764;
 }
 
 #switch-to-signup {
   background: none;
   border: none;
-  color: #007bff;
+  color: #740645;
   cursor: pointer;
   font-size: 0.9rem;
-  text-decoration: underline;
 }
 
-#switch-to-signup {
-  text-decoration: none;
+#switch-to-signup:hover {
+  text-decoration: underline;
 }
