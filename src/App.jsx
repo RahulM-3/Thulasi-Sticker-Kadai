@@ -35,6 +35,9 @@ function App() {
             {signedInUser}
             <a onClick={logout}>Logout</a>
           </p>
+          <button id='addbutton'>
+            <img src='./add_button.png' alt='add'></img>
+          </button>
         </div>
       </div>
     </div>
