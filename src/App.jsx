@@ -8,11 +8,48 @@ function App() {
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [newChatUsername, setNewChatUsername] = useState("");
+  const [recentChats, setRecentChats] = useState([]);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      const chats = await window.firebaseAPI.getRecentChat(signedInUser);
+      setRecentChats(chats);
+    };
+    fetchChats();
+  }, [signedInUser]);
 
   // logout function
   const logout = async () => {
     await window.electronAPI.saveUserCreds("", "");
     setSignedInUser(null);
+  }
+
+  function onChatClick(chatusername) {
+
+  }
+
+  // render recent chats in list
+  function renderRecentChats() {
+    const unread = true;
+    return (
+      <ul className="chat-list">
+        {recentChats.map(username => (
+          <li key={username} className="chat-item" onClick={() => onChatClick(username)}>
+            <div className="chat-left">
+              <span className="chat-username">{username}</span>
+              <span className="chat-last-message">{}</span>
+            </div>
+            <div className="chat-right">
+              {unread ? (
+                <span className="chat-status unread" title="Unread"></span>
+              ) : (
+                <span className="chat-status read" title="Read"></span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   // start new chat
@@ -21,7 +58,8 @@ function App() {
     setShowAddPopup(false);
     const result = await window.firebaseAPI.startNewChat(newChatUsername, signedInUser);
     setNewChatUsername("");
-    console.log(result);
+    const chats = await window.firebaseAPI.getRecentChat(signedInUser);
+    setRecentChats(chats);
   }
 
   // login if user is not signedin
@@ -42,7 +80,7 @@ function App() {
       </div>
     );
   }
-  
+
   // main page
   return (
     <div id="main">
@@ -72,9 +110,20 @@ function App() {
             {signedInUser}
             <a onClick={logout}>Logout</a>
           </p>
-          <button id='addbutton' onClick={ () => setShowAddPopup(true) }>
-            <img src='./add_button.png' alt='add'></img>
+          <button id='addbutton' onClick={() => setShowAddPopup(true)}>
+            <img src='./add_button.png' alt='add' />
           </button>
+        </div>
+
+        <div id="recentChats">
+          <h4>Recent Chats</h4>
+          {
+            recentChats.length > 0
+              ? renderRecentChats(recentChats, (username) => {
+                  console.log("Clicked:", username);
+                })
+              : <p>No recent chats</p>
+          }
         </div>
       </div>
     </div>

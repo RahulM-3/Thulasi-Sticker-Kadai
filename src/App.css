@@ -142,3 +142,75 @@
   cursor: pointer;
   line-height: 1;
 }
+
+/* Container */
+#recentChats {
+  padding: 16px;
+  background-color: #0a1e46; /* Dark background */
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Chat list */
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Each chat item */
+.chat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #112955; /* Slightly lighter than background */
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 1px solid #ed2788; /* Accent border */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.chat-item:hover {
+  background-color: #153065;
+  transform: scale(1.02);
+}
+
+/* Left section: username and message */
+.chat-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-username {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.chat-last-message {
+  font-size: 14px;
+  color: #cccccc;
+  margin-top: 4px;
+}
+
+/* Right section: unread/read status */
+.chat-right {
+  display: flex;
+  align-items: center;
+}
+
+.chat-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.chat-status.unread {
+  background-color: #ed2788; /* Accent = unread */
+}
+
+.chat-status.read {
+  background-color: #5cb85c; /* Green = read */
+}

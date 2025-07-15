@@ -129,4 +129,43 @@ async function startNewChat(username, yourusername) {
   }
 }
 
-module.exports = { signupUser, signinUser, startNewChat }
+// get recent chat function
+async function getRecentChat(yourusername) {
+  try {
+    const snapshot = await db.ref(`users/${yourusername}/chats`).once('value'); // user chat ref
+
+    if (!snapshot.exists()) {
+      return []; // No chats found
+    }
+
+    const chats = snapshot.val();
+
+    // Sort chat entries by timestamp (descending)
+    const sortedChatsId = Object.entries(chats)
+      .sort((a, b) => b[1] - a[1]) // Sort by timestamp
+      .map(([chatId]) => chatId);  // Return only the chat IDs
+
+    // get recent chat username
+    const recentChats = []
+    for (const chatId of sortedChatsId) {
+      const snapshot = await db.ref(`chats/${chatId}/participants`).once('value');
+      const participants = snapshot.val();
+
+      if (!participants) continue;
+
+      if (participants.user1 !== yourusername) {
+        recentChats.push(participants.user1);
+      }
+      else if (participants.user2 !== yourusername) {
+        recentChats.push(participants.user2);
+      }
+    }
+    return recentChats;
+  }
+  catch (error) {
+    console.error("Error fetching recent chats:", error);
+    return [];
+  }
+}
+
+module.exports = { signupUser, signinUser, startNewChat, getRecentChat }

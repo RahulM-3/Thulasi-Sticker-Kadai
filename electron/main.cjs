@@ -74,6 +74,16 @@ ipcMain.handle('newchat', async (event, { username, yourusername }) => {
   }
 });
 
+// recent chat export
+ipcMain.handle('recentChat', async (event, { username }) => {
+  try {
+    return await firebase.getRecentChat(username);
+  } 
+  catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
 // save and retrive username (local)
 const { encrypt, decrypt } = require("./utils")
 const fs = require('fs');
