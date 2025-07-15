@@ -41,6 +41,7 @@ app.on('window-all-closed', () => {
 });
 
 // IPC handler
+// signup export
 ipcMain.handle('firebase-signup', async (event, { username, password }) => {
   try {
     const data = await firebase.signupUser(username, password);
@@ -51,6 +52,7 @@ ipcMain.handle('firebase-signup', async (event, { username, password }) => {
   }
 });
 
+// signin export
 ipcMain.handle('firebase-signin', async (event, { username, password }) => {
   try {
     const data = await firebase.signinUser(username, password);
@@ -61,6 +63,7 @@ ipcMain.handle('firebase-signin', async (event, { username, password }) => {
   }
 });
 
+// newchat export
 ipcMain.handle('newchat', async (event, { username, yourusername }) => {
   try {
     const data = await firebase.startNewChat(username, yourusername);
@@ -71,7 +74,7 @@ ipcMain.handle('newchat', async (event, { username, yourusername }) => {
   }
 });
 
-// save and retrive username
+// save and retrive username (local)
 const { encrypt, decrypt } = require("./utils")
 const fs = require('fs');
 
