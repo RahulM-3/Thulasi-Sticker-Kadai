@@ -68,4 +68,34 @@ async function signinUser(username, password) {
   }
 }
 
-module.exports = { signupUser, signinUser }
+async function startNewChat(username, yourusername) {
+  try {
+    const snapshot = await db.ref('users').child(username).once('value');
+    const chat1 = await db.ref('chats').child(username+yourusername).once('value');
+    const chat2 = await db.ref('chats').child(yourusername+username).once('value');
+
+    if (!snapshot.exists()) {
+      return { success: false, message: 'User does not exist' };
+    }
+    else if(chat1.exists() || chat2.exists()) {
+      return { success: true, message: 'chat already exits'};
+    }
+    else {
+      await db.ref('chats').child(yourusername+username).set({
+        "participants" : {
+          "user1":yourusername, "user2":username
+        },
+        "messages": {
+          "root": "Chat Created at " + new Date().toLocaleString()
+        }
+      });
+      return { success: true, message: 'new chat created'};
+    }
+  }
+  catch (error) {
+    console.error('New chat error:', error);
+    return { success: false, message: 'New chat failed ' + error.message };
+  }
+}
+
+module.exports = { signupUser, signinUser, startNewChat }

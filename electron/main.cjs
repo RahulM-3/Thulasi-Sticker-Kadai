@@ -61,6 +61,15 @@ ipcMain.handle('firebase-signin', async (event, { username, password }) => {
   }
 });
 
+ipcMain.handle('newchat', async (event, { username, yourusername }) => {
+  try {
+    const data = await firebase.startNewChat(username, yourusername);
+    return { success: true, data };
+  } 
+  catch (err) {
+    return { success: false, error: err.message };
+  }
+});
 
 // save and retrive username
 const { encrypt, decrypt } = require("./utils")

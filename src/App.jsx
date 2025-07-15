@@ -12,6 +12,15 @@ function App() {
     await window.electronAPI.saveUserCreds("", "");
     setSignedInUser(null);
   }
+
+  const newChatSubmit = async (e) => {
+    e.preventDefault();
+    setShowAddPopup(false);
+    
+    const result = await window.firebaseAPI.startNewChat(newChatUsername, signedInUser);
+    console.log(result);
+  }
+
   if (!signedInUser) {
     return (
       <div>
@@ -38,15 +47,12 @@ function App() {
             <input
               type="text"
               placeholder="Enter username to chat"
-              value={newChatUsername}
+              value={ newChatUsername }
               onChange={(e) => setNewChatUsername(e.target.value)}
             />
             <button
               className="chat-button"
-              onClick={() => {
-                setShowAddPopup(false);
-                setNewChatUsername("");
-              }}
+              onClick={ newChatSubmit }
             >
               Chat
             </button>
