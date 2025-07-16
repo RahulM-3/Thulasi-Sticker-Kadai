@@ -84,6 +84,27 @@ ipcMain.handle('recentChat', async (event, { username }) => {
   }
 });
 
+// last online update export
+ipcMain.handle('updateUserLastOnline', async (event, { username }) => {
+  try {
+    return await firebase.lastOnline(username);
+  }
+  catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// get Recent Chat User Info
+ipcMain.handle('recentChatUserInfo', async (event, { yourusername, username }) => {
+  try {
+    return await firebase.getRecentChatUserInfo(yourusername, username);
+  }
+  catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+
 // save and retrive username (local)
 const { encrypt, decrypt } = require("./utils")
 const fs = require('fs');

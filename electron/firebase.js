@@ -36,7 +36,8 @@ async function signupUser(username, password) {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     await usersRef.child(username).set({
       password: hashedPassword,
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      lastOnline: Date.now()
     });
 
     return { success: true, message: 'Signup successful' };
@@ -168,4 +169,34 @@ async function getRecentChat(yourusername) {
   }
 }
 
-module.exports = { signupUser, signinUser, startNewChat, getRecentChat }
+// update last online
+async function lastOnline(username) {
+  try {
+    const userRef = await db.ref(`users/${username}/lastOnline`);
+    userRef.set(Date.now());
+    return { success: true };
+  }
+  catch (error) {
+    console.error('Last online update error ', error);
+    return { success: false, message: 'Last online update failed ' + error.message };
+  }
+}
+
+// get info about recent chat user
+async function getRecentChatUserInfo(yourUsername, recentChatUsername) {
+  try {
+    const userRef = await db.ref(`users/${yourUsername}`);
+    const snapshot = await db.ref(`users/${recentChatUsername}/lastOnline`).once('value');
+    const recentChatUserLastOnline = snapshot.val();
+
+    const info = { userlastOnline: recentChatUserLastOnline };
+    return info;
+  }
+  catch(error) {
+    console.error('Recent Chat user Info error ', error);
+    return { success: false, message: 'Recent Chat user Info failed ' + error.message };
+  }
+}
+
+module.exports = { signupUser, signinUser, startNewChat, 
+                    getRecentChat, lastOnline, getRecentChatUserInfo }
