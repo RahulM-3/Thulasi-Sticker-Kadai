@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('firebaseAPI', {
   startNewChat: (username, yourusername) => ipcRenderer.invoke('newchat', { username, yourusername }),
   getRecentChat: (username) => ipcRenderer.invoke('recentChat', { username }),
   lastOnline: (username) => ipcRenderer.invoke('updateUserLastOnline', { username }),
-  getRecentChatUserInfo: (yourusername, username) => ipcRenderer.invoke('recentChatUserInfo', { yourusername, username }),
+  getChatUserInfo: (yourusername, username) => ipcRenderer.invoke('recentUserInfo', { yourusername, username }),
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {

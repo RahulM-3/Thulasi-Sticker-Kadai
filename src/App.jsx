@@ -10,6 +10,7 @@ function App() {
   const [newChatUsername, setNewChatUsername] = useState("");
   const [recentChats, setRecentChats] = useState([]);
   const [chatInfoList, setChatInfoList] = useState([]);
+  const [chatUserInfo, setChatUserInfo] = useState({});
 
   // update last online
   useEffect(() => {
@@ -50,8 +51,9 @@ function App() {
   }
 
   // open chat
-  function openChat(chatusername) {
-
+  async function openChat(chatUsername) {
+    const info = await window.firebaseAPI.getChatUserInfo(signedInUser, chatUsername);
+    setChatUserInfo(info);
   }
 
   // get recent chats info
@@ -62,7 +64,7 @@ function App() {
       const infoList = [];
 
       for (const username of recentChats) {
-        const info = await window.firebaseAPI.getRecentChatUserInfo(signedInUser, username);
+        const info = await window.firebaseAPI.getChatUserInfo(signedInUser, username);
 
         infoList.push({
           username: username,
@@ -155,48 +157,68 @@ function App() {
 
   // main page
   return (
-    <div id="main">
-      {showAddPopup && (
-        <div className="popup-overlay">
-          <div className="popup-box minimal">
-            <button className="close-button" onClick={ () => setShowAddPopup(false) }>✕</button>
-            <input
-              type="text"
-              placeholder="Enter username to chat"
-              value={ newChatUsername }
-              onChange={(e) => setNewChatUsername(e.target.value)}
-            />
-            <button
-              className="chat-button"
-              onClick={ newChatSubmit }
-            >
-              Chat
+    <div id="main-container">
+      <div id="main">
+        {showAddPopup && (
+          <div className="popup-overlay">
+            <div className="popup-box minimal">
+              <button className="close-button" onClick={() => setShowAddPopup(false)}>✕</button>
+              <input
+                type="text"
+                placeholder="Enter username to chat"
+                value={newChatUsername}
+                onChange={(e) => setNewChatUsername(e.target.value)}
+              />
+              <button className="chat-button" onClick={newChatSubmit}>
+                Chat
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div id="sidebar">
+          <div id="sidebarheader">
+            <p>
+              {signedInUser}
+              <a onClick={logout}>Logout</a>
+            </p>
+            <button id="addbutton" onClick={() => setShowAddPopup(true)}>
+              <img src="./add_button.png" alt="add" />
             </button>
           </div>
-        </div>
-      )}
-
-      <div id="sidebar">
-        <div id="sidebarheader">
-          <p>
-            {signedInUser}
-            <a onClick={logout}>Logout</a>
-          </p>
-          <button id='addbutton' onClick={() => setShowAddPopup(true)}>
-            <img src='./add_button.png' alt='add' />
-          </button>
-        </div>
-
-        <div id="recentChats">
-          <h4>Recent Chats</h4>
-          {
-            recentChats.length > 0
-              ? renderRecentChats(recentChats, (username) => {
-                  console.log("Clicked:", username);
-                })
+      
+          <div id="recentChats">
+            <h4>Recent Chats</h4>
+            {recentChats.length > 0
+              ? renderRecentChats(recentChats, openChat)
               : <p>No recent chats</p>
-          }
+            }
+          </div>
         </div>
+          
+        {chatUserInfo.userName && (
+          <div className="chat-window">
+            <div className="chat-header">
+              <span>
+                { chatUserInfo.userName }
+                <br />
+                <small style={{ fontSize: '12px', color: '#ccc' }}>
+                  {
+                    timeAgo(chatUserInfo.userlastOnline) !== "Online"
+                      ? `Active ${timeAgo(chatUserInfo.userlastOnline)} ago`
+                      : "Online"
+                  }
+                </small>
+              </span>
+            </div>
+            <div className="chat-body">
+            </div>
+            <div className="chat-footer">
+              <input type="text" placeholder="Message..." />
+              <button>Send</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

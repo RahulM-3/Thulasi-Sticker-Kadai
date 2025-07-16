@@ -95,9 +95,9 @@ ipcMain.handle('updateUserLastOnline', async (event, { username }) => {
 });
 
 // get Recent Chat User Info
-ipcMain.handle('recentChatUserInfo', async (event, { yourusername, username }) => {
+ipcMain.handle('recentUserInfo', async (event, { yourusername, username }) => {
   try {
-    return await firebase.getRecentChatUserInfo(yourusername, username);
+    return await firebase.getChatUserInfo(yourusername, username);
   }
   catch (err) {
     return { success: false, error: err.message };

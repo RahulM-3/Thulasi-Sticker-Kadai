@@ -183,13 +183,13 @@ async function lastOnline(username) {
 }
 
 // get info about recent chat user
-async function getRecentChatUserInfo(yourUsername, recentChatUsername) {
+async function getChatUserInfo(yourUsername, chatUsername) {
   try {
     const userRef = await db.ref(`users/${yourUsername}`);
-    const snapshot = await db.ref(`users/${recentChatUsername}/lastOnline`).once('value');
+    const snapshot = await db.ref(`users/${chatUsername}/lastOnline`).once('value');
     const recentChatUserLastOnline = snapshot.val();
 
-    const info = { userlastOnline: recentChatUserLastOnline };
+    const info = { userName: chatUsername, userlastOnline: recentChatUserLastOnline };
     return info;
   }
   catch(error) {
@@ -199,4 +199,4 @@ async function getRecentChatUserInfo(yourUsername, recentChatUsername) {
 }
 
 module.exports = { signupUser, signinUser, startNewChat, 
-                    getRecentChat, lastOnline, getRecentChatUserInfo }
+                    getRecentChat, lastOnline, getChatUserInfo }
