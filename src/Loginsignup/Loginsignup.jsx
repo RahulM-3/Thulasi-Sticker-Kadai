@@ -100,8 +100,7 @@ function Loginsignup({ setSignedInUser, setLoadingScreen }) {
         />
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
-            <img src="./button_loading_screen.gif" alt="loading" style={{ position: "relative", width: "80px", 
-                                                                          height: "80px", bottom: "31px" }} />) : 
+            <img src="./button_loading_screen.gif" alt="loading" style={{ position: "relative", bottom: "90px", scale: "0.21" }} />) : 
             (isSignIn ? 'Sign In' : 'Sign Up')
           }
         </button>
